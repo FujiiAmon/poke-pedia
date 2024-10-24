@@ -11,10 +11,9 @@ export const GetData = () => {
     useEffect(() => {
         const fetchData = async () => {
             let _allPokemon = await getAllPokemon(url);
-            console.log(_allPokemon);
-            return _allPokemon;
+            setAllPokemon(_allPokemon);
         };
-        setAllPokemon(fetchData());
+        console.log(allPokemon);
         setLoad(false);
         // loadPokemon(allPokemon);
     }, []);
