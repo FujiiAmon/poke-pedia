@@ -13,6 +13,7 @@ export const GetData = () => {
             let _allPokemon = await getAllPokemon(url);
             setAllPokemon(_allPokemon);
         };
+        fetchData();
         console.log(allPokemon);
         setLoad(false);
         // loadPokemon(allPokemon);
