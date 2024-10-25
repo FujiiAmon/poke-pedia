@@ -6,17 +6,26 @@ export const GetData = () => {
 
     const [load, setLoad] = useState(true);
     const [allPokemon, setAllPokemon] = useState(null);
-    // const [data, setdata] = useState(null);
+    const [pokemon, setPokemon] = useState(null);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchAllData = async () => {
             let _allPokemon = await getAllPokemon(url);
             setAllPokemon(_allPokemon);
         };
+        fetchAllData();
+        // console.log(allPokemon);
+        const fetchData = async () => {
+            let _pokemon = await Promise.all(
+                allPokemon.map((value) => {
+                    getPokemon(value.url);
+                })
+            );
+            setPokemon(_pokemon);
+        };
         fetchData();
-        console.log(allPokemon);
+        console.log(pokemon);
         setLoad(false);
-        // loadPokemon(allPokemon);
     }, []);
 
     return (
@@ -39,22 +48,11 @@ const getAllPokemon = (url) => {
     });
 };
 
-// const getData = (url) => {
-//     return new Promise((resolve, reject) => {
-//         fetch(url)
-//             .then((res) => res.json())
-//             .then((data) => resolve(data.results))
-//             .catch((error) => reject(error));
-//     });
-// };
-
-const loadPokemon = async (allPokemon) => {
-    let loadData = await Promise.all(
-        allPokemon.map((value) => {
-            console.log(value.url);
-            // let dataRecord = getData(value.url);
-            // return dataRecord;
-        })
-    );
-    console.log(loadData);
+const getPokemon = (url) => {
+    return new Promise((resolve, reject) => {
+        fetch(url)
+            .then((res) => res.json())
+            .then((data) => resolve(data))
+            .catch((error) => reject(error));
+    });
 };
