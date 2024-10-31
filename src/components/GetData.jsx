@@ -1,58 +1,71 @@
 import { useEffect, useState } from "react";
 import { Card } from "./Card";
+import styled from "styled-components";
 
 export const GetData = () => {
     const url = "https://pokeapi.co/api/v2/pokemon";
 
     const [load, setLoad] = useState(true);
     const [allPokemon, setAllPokemon] = useState(null);
-    const [pokemon, setPokemon] = useState(null);
 
     useEffect(() => {
-        const fetchAllData = async () => {
-            let _allPokemon = await getAllPokemon(url);
-            setAllPokemon(_allPokemon);
-        };
-        fetchAllData();
+        new Promise((resolve) => resolve(getPokemon(url))).then((pokemon) =>
+            setAllPokemon(pokemon)
+        );
         // console.log(allPokemon);
-        const fetchData = async () => {
-            let _pokemon = await Promise.all(
-                allPokemon.map((value) => {
-                    getPokemon(value.url);
-                })
-            );
-            setPokemon(_pokemon);
-        };
-        fetchData();
-        console.log(pokemon);
-        setLoad(false);
-    }, []);
+    }, [allPokemon == null]);
 
     return (
         <div>
-            {load ? (
+            {allPokemon == null ? (
                 <h1>loading...</h1>
             ) : (
-                <h1>{/* <Card pokemon={pokemon} /> */}</h1>
+                <CardContainer>
+                    {allPokemon.map((val, key) => {
+                        return <Card key={key} pokemon={val} />;
+                    })}
+                </CardContainer>
             )}
         </div>
     );
 };
 
-const getAllPokemon = (url) => {
-    return new Promise((resolve, reject) => {
+const getData = async (url) => {
+    return new Promise((resolve) => {
         fetch(url)
             .then((res) => res.json())
-            .then((data) => resolve(data.results))
-            .catch((error) => reject(error));
+            .then((data) => resolve(data));
     });
 };
 
-const getPokemon = (url) => {
-    return new Promise((resolve, reject) => {
-        fetch(url)
-            .then((res) => res.json())
-            .then((data) => resolve(data))
-            .catch((error) => reject(error));
+const getPokemon = async (url) => {
+    let res = await getData(url);
+    res = res.results;
+    // console.log(res);
+
+    let urls = res.map((val) => {
+        return val.url;
     });
+    // console.log(urls);
+
+    let allData = await Promise.all(
+        urls.map((url) => {
+            return getData(url);
+        })
+    );
+    // console.log(pokemon);
+
+    let pokemon = allData.map((val) => {
+        return { name: val.name, image: val.sprites.front_default };
+    });
+    // console.log(data);
+
+    return pokemon;
 };
+
+const CardContainer = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+`;
