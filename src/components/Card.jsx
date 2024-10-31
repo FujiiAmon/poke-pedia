@@ -5,7 +5,7 @@ export const Card = ({ pokemon }) => {
 
     return (
         <PokemonCard>
-            <p>{name}</p>
+            <CardName>{name}</CardName>
             <img src={image} alt={name} />
         </PokemonCard>
     );
@@ -23,4 +23,10 @@ const PokemonCard = styled.div`
     width: 200px;
     height: 200px;
     background-color: #f0f0f0;
+    box-shadow: 5px 5px 5px #888888;
+`;
+
+const CardName = styled.h2`
+    text-transform: capitalize;
+    margin-bottom: 10px;
 `;

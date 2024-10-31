@@ -1,10 +1,12 @@
 import "./App.css";
 import { GetData } from "./components/getData";
+import { Navbar } from "./components/Navbar";
 
 function App() {
     return (
         <div>
-            <GetData className />
+            <Navbar />
+            <GetData />
         </div>
     );
 }
