@@ -20,8 +20,8 @@ const PokemonCard = styled.div`
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
-    width: 200px;
     height: 200px;
+    width: 90%;
     background-color: #f0f0f0;
     box-shadow: 5px 5px 5px #888888;
 `;
