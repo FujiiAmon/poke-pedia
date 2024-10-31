@@ -9,20 +9,27 @@ export const GetData = () => {
     useEffect(() => {
         (async () => {
             let res = await getData(url);
+            res = res.results;
             // console.log(res);
-            setAllPokemon(res);
-        })();
-        console.log(allPokemon);
-        // let urls = allPokemon.map((val) => {
-        //     return val.url;
-        // });
-        // console.log(urls);
-        // Promise.all(
-        //     urls.map((url) => fetch(url).then((res) => res.json()))
-        // ).foreach((res) => console.log(res));
 
+            let urls = res.map((val) => {
+                return val.url;
+            });
+            // console.log(urls);
+
+            let pokemon = await Promise.all(
+                urls.map((url) => {
+                    return getData(url);
+                })
+            );
+            // console.log(pokemon);
+
+            let data = pokemon.map((val) => {
+                return { name: val.name, image: val.sprites.front_default };
+            });
+            // console.log(data);
+        })();
         setLoad(false);
-        //loadPokemon(allPokemon);
     }, []);
 
     return (
@@ -40,7 +47,6 @@ const getData = async (url) => {
     return new Promise((resolve) => {
         fetch(url)
             .then((res) => res.json())
-            .then((res) => res.results)
             .then((data) => resolve(data));
     });
 };
