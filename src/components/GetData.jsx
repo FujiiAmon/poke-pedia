@@ -19,17 +19,19 @@ export const GetData = () => {
             }
         );
         // console.log(allPokemon);
-    }, [allPokemon == null, url]);
+    }, [allPokemon == null]);
 
     const prevPage = () => {
         if (prevUrl != null) {
             setUrl(prevUrl);
+            setAllPokemon(null);
         }
     };
 
     const nextPage = () => {
         if (nextUrl != null) {
             setUrl(nextUrl);
+            setAllPokemon(null);
         }
     };
 
@@ -45,16 +47,40 @@ export const GetData = () => {
                 </CardContainer>
             )}
             <>
-                <button onClick={prevPage}>前へ</button>
-                <button onClick={nextPage}>次へ</button>
+                <SBtn onClick={prevPage}>前へ</SBtn>
+                <SBtn onClick={nextPage}>次へ</SBtn>
             </>
         </div>
     );
 };
 
 const CardContainer = styled.div`
+    width: 100%;
     display: grid;
+    align-items: center;
+    justify-content: center;
+    place-content: center;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
     margin-top: 20px;
+`;
+
+const SBtn = styled.button`
+    background-color: orange;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 10px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 5px 5px 5px #888888;
+    &:hover {
+        background-color: #ff6600;
+        transform: scale(1.1);
+        box-shadow: none;
+    }
 `;

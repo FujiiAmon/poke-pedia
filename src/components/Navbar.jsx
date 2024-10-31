@@ -7,6 +7,7 @@ export const Navbar = () => {
 const Nav = styled.h1`
     background-color: orange;
     color: white;
+    width: 100%;
     text-align: center;
     padding: 10px;
     margin: 0;
