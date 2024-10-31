@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 const getData = async (url) => {
     return new Promise((resolve) => {
         fetch(url)
@@ -32,5 +30,5 @@ export const getPokemon = async (url) => {
     });
     // console.log(data);
 
-    return pokemon, prevUrl, nextUrl;
+    return { pokemon, prevUrl, nextUrl };
 };
