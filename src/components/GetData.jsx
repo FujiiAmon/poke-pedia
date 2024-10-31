@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Card } from "./Card";
+import styled from "styled-components";
 
 export const GetData = () => {
     const url = "https://pokeapi.co/api/v2/pokemon";
@@ -10,16 +12,19 @@ export const GetData = () => {
         new Promise((resolve) => resolve(getPokemon(url))).then((pokemon) =>
             setAllPokemon(pokemon)
         );
-        console.log(allPokemon);
-        setLoad(false);
-    }, [allPokemon === null]);
+        // console.log(allPokemon);
+    }, [allPokemon == null]);
 
     return (
         <div>
-            {load ? (
+            {allPokemon == null ? (
                 <h1>loading...</h1>
             ) : (
-                <h1>{/* <Card pokemon={pokemon} /> */}</h1>
+                <CardContainer>
+                    {allPokemon.map((val, key) => {
+                        return <Card key={key} pokemon={val} />;
+                    })}
+                </CardContainer>
             )}
         </div>
     );
@@ -57,3 +62,10 @@ const getPokemon = async (url) => {
 
     return pokemon;
 };
+
+const CardContainer = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+`;
