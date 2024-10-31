@@ -7,30 +7,12 @@ export const GetData = () => {
     const [allPokemon, setAllPokemon] = useState(null);
 
     useEffect(() => {
-        (async () => {
-            let res = await getData(url);
-            res = res.results;
-            // console.log(res);
-
-            let urls = res.map((val) => {
-                return val.url;
-            });
-            // console.log(urls);
-
-            let pokemon = await Promise.all(
-                urls.map((url) => {
-                    return getData(url);
-                })
-            );
-            // console.log(pokemon);
-
-            let data = pokemon.map((val) => {
-                return { name: val.name, image: val.sprites.front_default };
-            });
-            // console.log(data);
-        })();
+        new Promise((resolve) => resolve(getPokemon(url))).then((pokemon) =>
+            setAllPokemon(pokemon)
+        );
+        console.log(allPokemon);
         setLoad(false);
-    }, []);
+    }, [allPokemon === null]);
 
     return (
         <div>
@@ -49,4 +31,29 @@ const getData = async (url) => {
             .then((res) => res.json())
             .then((data) => resolve(data));
     });
+};
+
+const getPokemon = async (url) => {
+    let res = await getData(url);
+    res = res.results;
+    // console.log(res);
+
+    let urls = res.map((val) => {
+        return val.url;
+    });
+    // console.log(urls);
+
+    let allData = await Promise.all(
+        urls.map((url) => {
+            return getData(url);
+        })
+    );
+    // console.log(pokemon);
+
+    let pokemon = allData.map((val) => {
+        return { name: val.name, image: val.sprites.front_default };
+    });
+    // console.log(data);
+
+    return pokemon;
 };
