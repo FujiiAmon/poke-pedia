@@ -10,7 +10,9 @@ const getData = async (url) => {
 
 export const getPokemon = async (url) => {
     let res = await getData(url);
-    console.log(res);
+    // console.log(res);
+    let prevUrl = res.previous;
+    let nextUrl = res.next;
     res = res.results;
 
     let urls = res.map((val) => {
@@ -30,5 +32,5 @@ export const getPokemon = async (url) => {
     });
     // console.log(data);
 
-    return pokemon;
+    return pokemon, prevUrl, nextUrl;
 };
